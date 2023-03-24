@@ -1,8 +1,9 @@
 import cv2
-import matplotlib.pyplot as plt
+import numpy as np
 import os
 import glob
 import warnings
+from LGB import *
 warnings.filterwarnings("ignore")
 
 data_dir = "data1/"# the folder path
@@ -24,4 +25,4 @@ lgb_algorithm.train()
 lgb_algorithm.test()
 lgb_algorithm.print_result()
 for i in range(len(test_frames)):
-    lgb_algorithm.show_result(0)
+    lgb_algorithm.show_result(i)
