@@ -8,8 +8,6 @@ warnings.filterwarnings("ignore")
 
 import seaborn as sns
 from pylab import rcParams
-%matplotlib inline
-%config InlineBackend.figure_format='retina'
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 sns.set(style='whitegrid',font_scale=3)
