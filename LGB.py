@@ -49,7 +49,7 @@ class LGB:
     def encode(self,image , centroids , block):
         x = block[0]
         y = block[1]
-        comp_img = np.zeros((image.shape[0] // y, image.shape[1] // x))
+        comp_img = np.zeros((image.shape[0] // x, image.shape[1] // y))
         ind_x = 0
         for i in range(0,image.shape[0],x):
             ind_y=0
