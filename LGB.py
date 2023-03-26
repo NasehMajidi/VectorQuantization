@@ -65,7 +65,7 @@ class LGB:
     def decode(self, q_image , centroids , block):
         x = block[0]
         y = block[1]
-        decom_img = np.zeros((q_image.shape[0]*y , q_image.shape[1]*x))
+        decom_img = np.zeros((q_image.shape[0]*x , q_image.shape[1]*y))
         ind_x = 0
         for i in range(q_image.shape[0]):
             ind_y = 0
