@@ -146,11 +146,11 @@ class LGB:
         Goal: Calculating PSNR between two images
         
         Input:
-                -img1: the first image
-                -img2: the second image
+                - img1: the first image
+                - img2: the second image
         
         Output:
-                -out: PSNR
+                - out: PSNR
         """
         MSE = (np.linalg.norm(img1-img2)**2)/(img1.shape[0]*img1.shape[1] + 1e-6)
         MAX=np.max(img1)**2
