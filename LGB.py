@@ -1,3 +1,8 @@
+
+###############################################################################
+################################### Imports ###################################
+###############################################################################
+
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
@@ -13,6 +18,10 @@ register_matplotlib_converters()
 sns.set(style='whitegrid',font_scale=3)
 rcParams['figure.figsize'] = 22 , 10
 
+###############################################################################
+################################## LGB Class ##################################
+###############################################################################
+
 class LGB:
     def __init__(self, train_data, test_data,block, error, q_bit):
         self.train_data = train_data
@@ -21,13 +30,48 @@ class LGB:
         self.q_bit = q_bit
         self.x = block[0]
         self.y = block[1]
+        
+        """
+        Goal: Implementing the LGB algorithm
+        
+        Variable:
+                - train_data: training data
+                - test_data: testing data
+                - block: the images are divided into some blocks and this variable determines its dimensions
+                - error: the threshold of the acceptable error
+                - q_bit: # of qunatization bits
+                - x: first dimension of block
+                - y: second dimension of block
+        """
     
     @staticmethod
     def find_closest_center(x, centroids):
+        """
+        Goal: Find the closest center (centroid) for each input vector
+        
+        Inputs: 
+                - x: the input vector
+                - centroids: all centroid vectors
+                
+        Output:
+                - the index of closest centroid
+        """
         return np.argmin(np.linalg.norm(x - centroids, axis=1))
 
     
     def find_centroid(self,X, initial_centroids):
+        """
+        Goal: find the centroids based on input
+        
+        Input:
+                - X: the input vectors
+                - initial_centroids: the initial values of the centroids
+                
+        Output:
+                - cluster_ids: the cluster ids of all the vectors
+                - centroids: the centroids of all the vectors
+                - j: number of iterations
+        """
         K = initial_centroids.shape[0]
         centroids = np.array(initial_centroids)
         cluster_ids = None
@@ -49,6 +93,16 @@ class LGB:
         return cluster_ids,centroids,j
     
     def encode(self,image , centroids):
+        """
+        Gaol: encode (compress) an image
+        
+        Inputs:
+                - image: the input image
+                - centroids: all the centroids determined in the training phase
+        
+        Output:
+                - comp_image: the compressed (quantized) image
+        """
         comp_img = np.zeros((image.shape[0] // self.x, image.shape[1] // self.y))
         ind_x = 0
         for i in range(0,image.shape[0],self.x):
@@ -63,6 +117,16 @@ class LGB:
         return comp_img
     
     def decode(self, q_image , centroids):
+        """
+        Goal: decoede (decompress) an image
+        
+        Inputs:
+                - q_image: the compressed image
+                - centroids: all the centroids determined in the training phase
+        
+        Output:
+                - decomp_image: the decompressed image
+        """
         decom_img = np.zeros((q_image.shape[0]*self.x , q_image.shape[1]*self.y))
         ind_x = 0
         for i in range(q_image.shape[0]):
@@ -78,12 +142,29 @@ class LGB:
     
     @staticmethod
     def PSNR(img1,img2):
+        """
+        Goal: Calculating PSNR between two images
+        
+        Input:
+                -img1: the first image
+                -img2: the second image
+        
+        Output:
+                -out: PSNR
+        """
         MSE = (np.linalg.norm(img1-img2)**2)/(img1.shape[0]*img1.shape[1] + 1e-6)
         MAX=np.max(img1)**2
         out = 10*math.log10(MAX/(MSE+1e-6))
         return out
     
     def train(self):
+        """
+        Goal: run the training phase
+        
+        Input: /
+        
+        Output: / 
+        """
         print('---------Train Phase---------')
         train_vec=[]
         for i in tqdm(range(self.train_data.shape[2])):
@@ -96,6 +177,13 @@ class LGB:
         ID , self.centroids ,it= self.find_centroid(self.train_vec,initial_vec)
     
     def test(self):
+        """
+        Goal: run the testing phase
+        
+        Input: /
+        
+        Output: / 
+        """
         print('---------Test Phase---------')
         test_vec = []
         self.encoded_img_vec = []
@@ -113,12 +201,27 @@ class LGB:
         self.final_psnr = np.mean(self.psnr_vec)
         
     def print_result(self):
+        """
+        Goal: print a summary of the running algorithm
+        
+        Input: /
+        
+        Output: / 
+        """
         print('Summary:')
         print(f"          block:({self.x} , {self.y})")
         print(f"          Quantization bits: {self.q_bit}")
         print(f"          PSNR: {self.final_psnr}")        
 
     def show_result(self,indx):
+        """
+        Goal: compare original and decoded image
+        
+        Input:
+                -indx: the index of the image
+        
+        Output: / 
+        """
         fig = plt.figure()
         ax1 = fig.add_subplot(121)
         ax2 = fig.add_subplot(122)
