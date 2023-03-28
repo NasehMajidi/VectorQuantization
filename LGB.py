@@ -34,7 +34,7 @@ class LGB:
         """
         Goal: Implementing the LGB algorithm
         
-        Variable:
+        Input:
                 - train_data: training data
                 - test_data: testing data
                 - block: the images are divided into some blocks and this variable determines its dimensions
